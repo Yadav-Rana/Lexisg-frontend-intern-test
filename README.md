@@ -30,17 +30,20 @@ A modern, ChatGPT-like interface for a legal assistant that provides AI-generate
 ### Installation
 
 1. Clone the repository:
+
 ```bash
-git clone 
+git clone https://github.com/Yadav-Rana/Lexisg-frontend-intern-test.git
 cd Lexisg-frontend-intern-test
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -58,19 +61,79 @@ npm run dev
 ### Example Question
 
 Try asking this sample question:
+
 ```
 "In a motor accident claim where the deceased was self-employed and aged 54–55 years at the time of death, is the claimant entitled to an addition towards future prospects in computing compensation under Section 166 of the Motor Vehicles Act, 1988? If so, how much?"
 ```
 
 ## Citation Handling
 
-The application handles citations in the following way:
+The application implements a sophisticated citation linking system that allows users to trace AI-generated legal answers back to their original source documents. Here's how citation linking was handled:
 
-1. **Citation Display**: Citations appear below each answer in dedicated cards
-2. **Source Information**: Each citation shows the source document and paragraph reference
-3. **Modal Popup**: Clicking a citation opens a modal with detailed information
-4. **PDF Access**: Modal provides direct link to the source PDF document
-5. **Paragraph Reference**: Citations include specific paragraph numbers for easy reference
+### 1. Citation Data Structure
+
+Each citation contains:
+
+- **Text**: The exact quoted text from the legal document
+- **Source**: The PDF filename (e.g., "Dani_Devi_v_Pritam_Singh.pdf")
+- **Paragraph**: Reference to specific paragraph (e.g., "Para 7")
+- **PDF URL**: Local path to the PDF file for viewing
+- **Highlight Text**: Specific text to search and highlight within the PDF
+
+### 2. Citation Display
+
+- Citations appear below each AI answer in dedicated gray cards
+- Each citation shows the quoted text in italics
+- Source information displays the paragraph reference and document name
+- A blue "Open [filename]" button provides direct access to the PDF
+
+### 3. PDF Integration with React-PDF
+
+The application uses **react-pdf** library for seamless PDF viewing:
+
+- **PDF.js Worker**: Configured to use local worker file (`/pdf.worker.min.js`)
+- **Modal Interface**: Full-screen modal popup for PDF viewing
+- **Page Navigation**: Previous/Next buttons and direct page input
+- **Loading States**: Visual feedback during PDF loading
+
+### 4. Smart Citation Linking
+
+When a citation is clicked, the system:
+
+- **Estimates Starting Page**: Calculates likely page based on paragraph number (assumes 2-3 paragraphs per page)
+- **Opens PDF Modal**: Displays the PDF with navigation controls
+- **Highlights Citation Text**: Automatically searches for and highlights the referenced text
+- **Provides Context**: Shows the citation text above the PDF for reference
+
+### 5. Text Search and Highlighting
+
+(\*This is not exactly working how it is intended to but does the job done for now)
+
+Advanced text highlighting features:
+
+- **Automatic Search**: Searches for citation text when PDF loads
+- **Visual Highlighting**: Yellow background with pulsing animation for found text
+- **Multiple Match Handling**: Highlights all instances of the citation text
+- **Best Match Detection**: Special highlighting for the most relevant match
+- **CSS Animations**: Smooth highlighting effects with keyframe animations
+
+### 6. User Experience Features
+
+- **Responsive Design**: Modal adapts to different screen sizes
+- **External Link**: Option to open PDF in new tab if modal viewing fails
+- **Error Handling**: Graceful fallback when PDF fails to load
+- **Search Indicators**: Shows what text is being searched and on which page
+- **Page Counter**: Displays current page and total pages
+
+### 7. Technical Implementation
+
+The citation linking system is built with:
+
+- **React Hooks**: `useState` and `useEffect` for state management
+- **Event Handlers**: `handleCitationClick()` for processing citation clicks
+- **PDF Events**: `onDocumentLoadSuccess()` and `onDocumentLoadError()` for PDF handling
+- **Search Algorithm**: `searchAndHighlightText()` for finding and highlighting text
+- **CSS Animations**: Custom keyframe animations for highlighting effects
 
 ## Project Structure
 
@@ -99,24 +162,18 @@ npm run build
 
 The built files will be in the `dist` directory, ready for deployment.
 
+## Screenshots
+
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
+
 ## Deployment
 
-The application can be deployed to any static hosting service like:
-- Vercel
-- Netlify
-- GitHub Pages
-- AWS S3 + CloudFront
+The application is deployed to:
 
-## Future Enhancements
-
-- Real backend integration
-- User authentication
-- Chat history persistence
-- Advanced search filters
-- Document highlighting
-- Multi-language support
-- Voice input/output
+- Netlify at : https://lexisg-yadav-rana.netlify.app/
 
 ## License
 
-This project is for demonstration purposes as part of the Lexi frontend internship assignment.
+This project is for demonstration purposes as part of the Lexi frontend internship assignment done by Yadav Rana.
